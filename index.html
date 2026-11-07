@@ -1061,6 +1061,36 @@ JOBS[0].pts=[
  "SAP ISU testing: Built an adversarial and regression test suite covering 19 prompt-injection and grounding-robustness categories before go-live, so weaknesses could be found before end users encountered them.",
  "ML observability: Scoped and designed an observability platform for production ML models, including data-drift detection, configurable Slack, email and PagerDuty alerts, and a composite trust score."
 ];
+JOBS[0].projects=[
+ {name:"Gas Meter Corrosion Inspection",stack:"Gemini 2.5 Flash, Vertex AI, Cloud Run, Pub/Sub, Cloud Scheduler, BigQuery, Cloud Storage, Secret Manager, ArcGIS/Survey123, Python",pts:[
+  "Process: Engineered an end-to-end GenAI inspection pipeline that classifies paint loss, pitted pipe and surface rust from one to seven photos per gas meter, replacing the previous manual supervisor pass.",
+  "Scale: Built an event-driven hourly flow from Cloud Scheduler to Cloud Run ingestion, Pub/Sub, an inference service and ArcGIS write-back. It has processed 900K+ survey records across 7 regions without a manual trigger.",
+  "Engineering decision: Chose few-shot Gemini with 14 to 16 curated examples over a YOLO detector because reliable labels did not exist and field flags disagreed. This avoided a multi-month labelling effort and delivered a working system sooner.",
+  "Human-in-the-loop: Built a review app that routes model and field-flag disagreements to supervisors, logs their decisions to BigQuery, and builds a verified dataset for future detector training."
+ ]},
+ {name:"BigQuery Query Optimization",stack:"BigQuery, Python",pts:[
+  "Cost: Cut data scanned per query by 96% (11.8 GB to 467 MB) by partitioning and clustering a 1 TB image-attachment table, removing quota failures that had stalled the next-generation pipeline in development."
+ ]},
+ {name:"Field Operations Forecasting and Staffing Planner",stack:"Prophet, SARIMA, LightGBM, Monte Carlo simulation, Streamlit, Gemini, BigQuery",pts:[
+  "Planning: Built weekly ticket forecasts four weeks ahead by county and work type, with Prophet, SARIMA and LightGBM selected by backtested MAPE. SARIMA won in 9 of 10 counties.",
+  "Decision support: Built a headcount planner that forecasts 36 months across 11 service areas with a 10K-run Monte Carlo simulation, giving planners P50, P80 and P95 staffing scenarios.",
+  "Explainability: Added Gemini-written explanations of staffing gaps so non-technical managers can act on the numbers.",
+  "Alerting: Automated email alerts for emergency tickets, replacing manual monitoring."
+ ]},
+ {name:"811 Dig Ticket Risk Scoring",stack:"BigQuery, GIS, census data, Python",pts:[
+  "Risk reduction: Built a probability-by-consequence model over a 477 GB ticket table, combining census density, pipeline attributes and proximity analysis to prioritise excavation requests near gas lines across 10 Texas counties."
+ ]},
+ {name:"GPS On-Site Validation",stack:"Python, BigQuery, GPS telematics",pts:[
+  "Data integrity: Built a daily job that verifies technician arrival on emergency orders by matching trucks to technicians (sign-on data first, fleet-table fallback) and checking that the truck parked within 260 m of the job.",
+  "Reliability: Added a nearest-ping fallback and business-rule guards; validated 409 of 465 orders (about 89%) on a sampled day, writing times to BigQuery for response-time reporting."
+ ]},
+ {name:"SAP ISU Chatbot Security Testing",stack:"Python",pts:[
+  "Risk prevented: Built an adversarial and regression test suite covering 19 prompt-injection and grounding-robustness categories before go-live, so weaknesses could be found before end users encountered them."
+ ]},
+ {name:"ML Observability Platform",stack:"Design phase",pts:[
+  "Scoped and designed an observability platform for production ML models: data-drift detection, configurable Slack, email and PagerDuty alerts, and a composite trust score."
+ ]}
+];
 
 /* ============ toasts, achievements, queue ============ */
 var toastsEl=null, listeners=[], achEl=null;
@@ -1309,7 +1339,15 @@ function UL(a){return '<ul class="nl">'+a.map(function(x){return "<li>"+esc(x)+"
 function STACK(t){return '<p class="stack">'+esc(t)+"</p>";}
 function proj(id){return D.PROJECTS.filter(function(x){return x.id===id;})[0];}
 function projectBody(id){var p=proj(id);return '<p class="sub">'+esc(p.sub)+"</p>"+p.rows.map(function(r){return H(r[0].toLowerCase())+P(r[1]);}).join("")+STACK("stack: "+p.stack);}
-function jobPoints(j){return '<ul class="nl">'+j.pts.map(function(p){var cut=j.id==="dataneurus"?p.indexOf(":"):-1;return cut>0?"<li><b>"+esc(p.slice(0,cut))+".</b> "+esc(p.slice(cut+1).trim())+"</li>":"<li>"+esc(p)+"</li>";}).join("")+"</ul>";}
+function jobPoints(j){
+  if(j.projects){
+    return j.projects.map(function(p){
+      var ul='<ul class="nl">'+p.pts.map(function(pt){var cut=pt.indexOf(":");return cut>0?"<li><b>"+esc(pt.slice(0,cut))+".</b> "+esc(pt.slice(cut+1).trim())+"</li>":"<li>"+esc(pt)+"</li>";}).join("")+"</ul>";
+      return '<h3 style="margin:1.1rem 0 .1rem;font-size:14px;font-weight:600">'+esc(p.name)+'</h3><p class="stack">'+esc(p.stack)+'</p>'+ul;
+    }).join("");
+  }
+  return '<ul class="nl">'+j.pts.map(function(p){var cut=j.id==="dataneurus"?p.indexOf(":"):-1;return cut>0?"<li><b>"+esc(p.slice(0,cut))+".</b> "+esc(p.slice(cut+1).trim())+"</li>":"<li>"+esc(p)+"</li>";}).join("")+"</ul>";
+}
 function story(id){var n=D.NOTES.filter(function(x){return x.id===id;})[0];return n.body.map(P).join("");}
 function embed(el,section,item,st){var card=document.createElement("div");card.className="ecard";var box=document.createElement("div");box.className="embed";card.appendChild(box);el.appendChild(card);if(!st.static)B.render(section,item,box);return box;}
 
