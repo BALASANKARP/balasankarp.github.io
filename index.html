@@ -240,7 +240,8 @@ table.req{width:100%;border-collapse:collapse;margin-top:1rem;font-size:13px}
 <style>
 :root{--bg:#fff;--side:#f5f5f6;--line:#e4e4e7;--text:#111;--muted:#7b7b82;--sel:#f8e9a8;--accent:#d99a00;--card:#f2f2f3;--bar:30px;--ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Geist",system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 html[data-theme="dark"]{--bg:#151516;--side:#1c1c1e;--line:#2b2b2e;--text:#f1f1f2;--muted:#9c9ca3;--sel:#3b3323;--accent:#f5b324;--card:#202023}
-html,body{background:var(--bg);color:var(--text);font-family:var(--ui)}
+html,body{background:linear-gradient(155deg,#a8ccf0 0%,#c0aaee 30%,#eeb4d8 65%,#f8d8b0 100%) fixed;color:var(--text);font-family:var(--ui)}
+html[data-theme="dark"],html[data-theme="dark"] body{background:linear-gradient(155deg,#0c1220 0%,#100e28 35%,#1e0e2e 65%,#0c0c1a 100%) fixed}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 ::selection{background:var(--accent);color:#000}
 
@@ -1343,7 +1344,7 @@ function jobPoints(j){
   if(j.projects){
     return j.projects.map(function(p){
       var ul='<ul class="nl">'+p.pts.map(function(pt){var cut=pt.indexOf(":");return cut>0?"<li><b>"+esc(pt.slice(0,cut))+".</b> "+esc(pt.slice(cut+1).trim())+"</li>":"<li>"+esc(pt)+"</li>";}).join("")+"</ul>";
-      return '<h3 style="margin:1.1rem 0 .1rem;font-size:14px;font-weight:600">'+esc(p.name)+'</h3><p class="stack">'+esc(p.stack)+'</p>'+ul;
+      return '<div style="margin:1.4rem 0 .2rem;display:flex;align-items:baseline;gap:.45rem;flex-wrap:wrap"><span style="font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0">project</span><span style="font-size:14px;font-weight:600;color:var(--text)">'+esc(p.name)+'</span></div><p class="stack">'+esc(p.stack)+'</p>'+ul;
     }).join("");
   }
   return '<ul class="nl">'+j.pts.map(function(p){var cut=j.id==="dataneurus"?p.indexOf(":"):-1;return cut>0?"<li><b>"+esc(p.slice(0,cut))+".</b> "+esc(p.slice(cut+1).trim())+"</li>":"<li>"+esc(p)+"</li>";}).join("")+"</ul>";
@@ -1355,7 +1356,7 @@ function embed(el,section,item,st){var card=document.createElement("div");card.c
 var NOTES=[
  {id:"about",em:"👋",title:"about me",pinned:true,preview:"a more personal introduction: mind, body, soul…",build:buildAbout},
  //{id:"queue",em:"✅",title:"review queue",pinned:true,preview:"three items need a human. clear them to see how i think.",build:buildQueue},
- {id:"resume",em:"📄",title:"resume",pinned:true,preview:"the one-page version: roles, projects, skills.",build:function(el){el.innerHTML="<h1>📄 resume</h1>"+P("AI engineer in Bengaluru. About two years of experience building production GenAI, retrieval and computer vision systems on Google Cloud.")+'<div class="btnrow"><a class="nb" href="resume.pdf" target="_blank" rel="noopener">Download the PDF</a><a class="nb ghost" href="plain.html">Plain version</a></div><hr>'+H("experience")+UL(D.JOBS.map(function(j){return j.role+", "+j.org.replace("working for a US utility company","for a US utility company")+" ("+j.when.split(",")[0]+")";}))+H("projects")+UL(D.PROJECTS.map(function(p){return p.name+": "+p.sub;}))+H("skills")+UL(D.SKILLS.map(function(r){return r[0]+": "+r[1];}))+H("education")+UL(D.EDU.map(function(r){return r[0]+": "+r[1];}));}},
+ //{id:"resume",em:"📄",title:"resume",pinned:true,preview:"the one-page version: roles, projects, skills.",build:function(el){el.innerHTML="<h1>📄 resume</h1>";}},
  //{id:"ask",em:"💬",title:"ask me anything",live:true,preview:"answers come from this site only, with sources.",build:function(el,st){...}},
  //{id:"match",em:"🎯",title:"job match",live:true,preview:"paste a job description. i’ll tell you where i fit and where i don’t.",build:function(el,st){...}},
  //{id:"now",em:"📍",title:"right now",date:"2026-11",preview:"what i’m building and what i’m looking for.",build:function(el){...}},
@@ -1363,23 +1364,23 @@ var NOTES=[
  {id:"skills",em:"🛠️",title:"skills & education",date:"2026-11",preview:"the tools i use day to day, and where i studied.",build:function(el){el.innerHTML="<h1>🛠️ skills & education</h1>"+D.SKILLS.map(function(r){return H(r[0].toLowerCase())+P(r[1]);}).join("")+H("education")+D.EDU.map(function(r){return "<p><b>"+esc(r[0])+".</b> "+esc(r[1])+"</p>";}).join("");}},
  {id:"limits",em:"⚠️",title:"the fine print",date:"2026-11",preview:"what this site doesn’t claim.",build:function(el){el.innerHTML="<h1>⚠️ the fine print</h1>"+P("A portfolio that only lists strengths isn’t much use to you. Here is what I don’t claim.")+'<ul class="nl">'+D.LIMITS.map(function(r){return "<li><b>"+esc(r[0])+"</b> "+esc(r[1])+"</li>";}).join("")+"</ul>";}},
  //{id:"site",em:"🔧",title:"how this site works",date:"2026-11",preview:"one static file. no server, no tracking, no ai api.",build:function(el){...}},
- {id:"experience",em:"💼",title:"experience",date:"2025-04",preview:"dataneurus, ip ever and tiger analytics.",build:function(el){el.innerHTML="<h1>💼 experience</h1>"+D.JOBS.map(function(j){return H(j.role)+'<p class="sub">'+esc(j.org+". "+j.when)+"</p>"+jobPoints(j);}).join("");}},
- {id:"aci",em:"📷",title:"gas meter corrosion inspection",date:"2025",preview:"an ai pipeline that checks every meter photo and only asks a person when unsure.",build:function(el){el.innerHTML="<h1>📷 gas meter corrosion inspection</h1>"+projectBody("aci")+'<div class="btnrow"><button class="nb" data-go="yolo" type="button">Why not YOLO?</button><button class="nb ghost" data-go="bq" type="button">The 1 TB query</button></div>';}},
- {id:"ops",em:"📈",title:"forecasting and risk scoring",date:"2025",preview:"weekly ticket forecasts, a staffing planner and a risk score for dig tickets.",build:function(el){el.innerHTML="<h1>📈 forecasting and risk scoring</h1>"+projectBody("ops");}},
- {id:"gst",em:"⚖️",title:"gst copilot",date:"2025-11",preview:"a rag assistant for indian gst law that cites its sources.",build:function(el){el.innerHTML="<h1>⚖️ gst copilot</h1>"+projectBody("gst")+'<div class="btnrow"><button class="nb ghost" data-go="gstlimits" type="button">What it can’t do yet</button></div>';}},
- {id:"kg",em:"🌾",title:"knowledge graph for agriculture",date:"2025-01",preview:"presented at the springer research conclave 2025.",build:function(el){el.innerHTML="<h1>🌾 knowledge graph for agriculture</h1>"+projectBody("kg");}},
+ {id:"experience",em:"💼",title:"experience",date:"2025-04",preview:"dataneurus, ip ever and tiger analytics.",build:function(el){el.innerHTML="<h1>💼 experience</h1>"+D.JOBS.map(function(j,i){return '<div style="margin-top:'+(i===0?"1":"2.4")+'rem;padding-left:14px;border-left:3px solid var(--accent)"><div style="font-size:19px;font-weight:700;line-height:1.3">'+esc(j.org)+'</div><div style="font-size:13px;color:var(--muted);margin-top:3px">'+esc(j.role+" · "+j.when)+"</div></div>"+jobPoints(j);}).join("");}},
+ //{id:"aci",em:"📷",title:"gas meter corrosion inspection"},
+ //{id:"ops",em:"📈",title:"forecasting and risk scoring"},
+ //{id:"gst",em:"⚖️",title:"gst copilot"},
+ //{id:"kg",em:"🌾",title:"knowledge graph for agriculture"},
  {id:"askwhen",em:"🧠",title:"how i think",date:"2025",preview:"a few principles that changed how I approach growth.",build:function(el){el.innerHTML="<h1>🧠 how i think</h1>"+P("I do not have a perfect roadmap, and I am still figuring out what progress means for me. But over the last few years, a few principles have genuinely changed how I learn, work and grow.")+H("1 · dimensions")+P("I try not to be one-dimensional. Building systems matters, but so does understanding the people who use them, the business around them, and the wider world. I read outside my field, follow ideas that are unfamiliar, and look for the intersections where different skills become useful.")+H("2 · people")+P("Talking to people expands the world quickly. A good conversation with a teammate, mentor or someone who sees a problem differently can replace weeks of guessing. I try to ask questions, listen closely and borrow perspectives before deciding what I think.")+H("3 · think")+P("I value time to think. Break a problem down, research it properly, and get clear on what is actually being asked before reaching for a tool. The same applies outside work: it is worth asking what kind of person I want to become, not only what the next milestone is.")+H("4 · taste / exposure")+P("Good taste is built through exposure. I pay attention to systems that feel clear, products people enjoy using, strong writing and thoughtful design. It raises the bar for what I build, how I communicate, and what I am willing to ship.")+P("I still feel clueless half the time. But I am more curious, more deliberate and a little further forward than I was before. Still figuring it out, every day.")+"<hr>"+P("If any of this resonates, get in touch — I genuinely like talking to people.")+'<div class="btnrow"><button class="nb ghost" data-go="hit" type="button">Contact</button></div>'; }},
  {id:"yolo",em:"🤖",title:"why i didn’t train yolo",date:"2025",preview:"a detector needs labels. we had a few hundred, and they disagreed.",build:function(el){el.innerHTML="<h1>🤖 why I didn’t train YOLO</h1>"+story("n2");}},
  {id:"bq",em:"🗄️",title:"the 1 tb query that hit the quota",date:"2025",preview:"one clustering key cut a lookup from 11.8 gb to 467 mb.",build:function(el){el.innerHTML="<h1>🗄️ the 1 TB query that hit the quota</h1>"+story("n3");}},
  {id:"gstlimits",em:"🧪",title:"what gst copilot can’t do yet",date:"2025",preview:"a working prototype, not a finished product.",build:function(el){el.innerHTML="<h1>🧪 what GST Copilot can’t do yet</h1>"+story("n4");}},
- {id:"other",em:"🧬",title:"other projects",date:"2024",preview:"a biomedical knowledge graph and a lecture summariser.",build:function(el){el.innerHTML="<h1>🧬 other projects</h1>"+projectBody("other");}}
+ //{id:"other",em:"🧬",title:"other projects"},
 ];
 var noteById={}; NOTES.forEach(function(n){noteById[n.id]=n;});
 noteById.hit.date="2024";
 noteById.skills.date="2025";
 noteById.yolo.hidden=noteById.bq.hidden=noteById.gstlimits.hidden=true;
 NOTES.splice(NOTES.indexOf(noteById.limits),1);
-var NOTE_ORDER=["about","resume","experience","aci","gst","ops","kg","skills","askwhen","yolo","bq","gstlimits","other","hit"];
+var NOTE_ORDER=["about","experience","skills","askwhen","yolo","bq","gstlimits","hit"];
 NOTES.sort(function(a,b){return NOTE_ORDER.indexOf(a.id)-NOTE_ORDER.indexOf(b.id);});
 var thinkNote=noteById.askwhen, thinkBuild=thinkNote.build;
 thinkNote.build=function(el){
@@ -1394,14 +1395,19 @@ var byId={}; NOTES.forEach(function(n){byId[n.id]=n;});
 function buildAbout(el,st){
   el.innerHTML='<h1>👋 about me</h1>'+
    '<img class="profile" src="profile.jpg" alt="Balasankar smiling outdoors at night">'+
-   P("Hi, I’m Balasankar, an AI engineer in Bengaluru. You can find my career on LinkedIn or GitHub — here’s a more personal way to introduce myself, in three parts: mind, body, soul.")+
-   P("I’m trying to reinvent myself a little every day: learning, unlearning, and becoming more intentional about who I am and how I move through the world.")+
-   H("mind")+P("I spend a lot of time turning over questions and problems, reading around a subject, and trying to connect dots that do not obviously go together. I do not know everything, far from it. What I have learned is how to get up to speed quickly and keep learning.")+
-   H("body")+P("I try to make room for a healthier, more grounded life alongside the work: consistency, time away from a screen, and paying attention to the smaller things around me.")+
-   H("soul")+P("I am still figuring out what a good life means to me — how to stay calm, be kind, and give back some of the care I have been lucky enough to receive.")+
-   "<hr>"+H("where to go next")+P("If you want more, see my experience, projects, skills & education, or how I think. If you would rather just talk, get in touch.")+
-   '<div class="btnrow"><button class="nb" data-go="experience" type="button">Experience</button><button class="nb ghost" data-go="aci" type="button">Projects</button><button class="nb ghost" data-go="askwhen" type="button">How I think</button><button class="nb ghost" data-go="hit" type="button">Contact</button></div>'+
-   "<hr>"+'<p>Elsewhere: <a href="'+D.LINKEDIN+'" target="_blank" rel="noopener">LinkedIn</a> · <a href="'+D.GITHUB+'" target="_blank" rel="noopener">GitHub</a>.</p>';
+   P("I like figuring things out. And then building them.")+
+   P("I’m an AI engineer by profession, but curiosity is probably the better description of what I do.")+
+   P("I like understanding how things work, questioning why they’re built a certain way, breaking complicated problems down to their fundamentals, and figuring out how to make them better. I’m naturally drawn to unfamiliar problems, and I enjoy the process of going from knowing absolutely nothing about something to understanding it well enough to build with it.")+
+   P("That mindset has taken me into building production AI systems, from data pipelines and retrieval-augmented generation to computer vision and intelligent automation. I work on systems that have to function beyond a notebook, handle real-world constraints, and deliver actual value. Currently I’m working on AI solutions for a US utility client.")+
+   P("But building things isn’t just a work thing.")+
+   P("Outside work, you’ll probably find me experimenting with terrariums, DIY projects, small hobby builds, or exploring drones. I enjoy working with completely different things, understanding their mechanics, experimenting, getting things wrong, and trying again. The subject changes, but the satisfaction of making something work doesn’t.")+
+   P("I’m also someone who can disappear down a rabbit hole researching something that has absolutely nothing to do with my job. I listen to podcasts, explore random ideas, and follow whatever happens to catch my curiosity that week.")+
+   P("Originally from South Kerala, now based in Bengaluru for the past three years. Still haven’t figured out the traffic, though.")+
+   P("I don’t think curiosity has to stay within a job description. There’s too much interesting stuff happening in the world to limit yourself to just one field. I’d rather keep learning, keep experimenting, and keep building things that are useful.")+
+   P("If something here resonates with you, or if you’re building something interesting, I’d love to connect.")+
+   "<hr>"+
+   '<div class="btnrow"><button class="nb" data-go="experience" type="button">Experience</button><button class="nb ghost" data-go="skills" type="button">Skills</button><button class="nb ghost" data-go="askwhen" type="button">How I think</button><button class="nb ghost" data-go="hit" type="button">Get in touch</button></div>'+
+   "<hr>"+'<p>Elsewhere: <a href="’+D.LINKEDIN+’" target="_blank" rel="noopener">LinkedIn</a> · <a href="’+D.GITHUB+’" target="_blank" rel="noopener">GitHub</a>.</p>';
 }
 function particles(cv){
   if(!cv||!cv.getContext)return; var ctx=cv.getContext("2d"), W=0,H=0,DPR=1,P=[],STEP=3,SZ=1.7,mx=0,my=0,has=false,last=0,R=70,reduce=RM();
@@ -1444,7 +1450,7 @@ function drawQlist(){
   var l=$("#qlist"); if(!l)return; var left=B.qLeft(), apps={q1:"queue",q2:"ask",q3:"match"};
   l.innerHTML=D.QUEUE.map(function(q){var done=B.state.q[q.id];
     return '<div class="chk'+(done?" on":"")+'"><span class="ring">'+(done?"✓":"")+'</span><div><b>'+esc(q.title)+'</b><div class="mut">'+esc(q.model)+'</div>'+(done?'<p class="stt">'+esc(q.story)+"</p>":"")+'</div>'+(done?"":'<button class="nb go" data-go="'+apps[q.id]+'" data-anchor="'+(q.id==="q1"?"qphoto":"")+'" type="button">'+(q.id==="q1"?"Play":"Open")+"</button>")+"</div>";}).join("")+
-    (left?"":'<div class="done"><b>Queue cleared.</b><p style="margin:.4rem 0 .8rem">Reviewer promoted to hiring manager. The model does the easy part and a person decides. I’d love to be in that conversation.</p><div class="btnrow" style="margin:0"><button class="nb" data-go="hit" type="button">Write to me</button><a class="nb ghost" href="plain.html">Plain version</a></div></div>');
+    (left?"":'<div class="done"><b>Queue cleared.</b><p style="margin:.4rem 0 .8rem">Reviewer promoted to hiring manager. The model does the easy part and a person decides. I\'d love to be in that conversation.</p><div class="btnrow" style="margin:0"><button class="nb" data-go="hit" type="button">Write to me</button><a class="nb ghost" href="plain.html">Plain version</a></div></div>');
   wireGo(l);
 }
 
@@ -1734,7 +1740,7 @@ function openMessages(){openWin({id:"messages",title:"Messages",cls:"mw-messages
       body.innerHTML='<div style="height:12px"></div>'+D.QUEUE.map(function(q){var done=B.state.q[q.id];return '<div class="bub"><b>'+esc(q.title)+"</b><br>"+esc(q.model)+(done?"<br><i>Resolved.</i> "+esc(q.story):'<br><button class="btn" data-q="'+q.id+'" type="button">'+esc(q.cta)+"</button>")+"</div>";}).join("")+'<div class="bub me">On it.</div>';
       [].forEach.call(body.querySelectorAll("[data-q]"),function(b){b.addEventListener("click",function(){var id=b.getAttribute("data-q");if(id==="q1")openPhotos();else if(id==="q2")show("ask");else {showApp();go("match");}});});return;}
     w.body.querySelector("#mhn").textContent="Balasankar P";w.body.querySelector("#mhs").textContent="Bengaluru";
-    body.innerHTML='<div style="height:12px"></div><div class="bub">Hi, I’m Balasankar. Thanks for stopping by.</div><div class="bub">The fastest way to reach me is email: <a href="mailto:'+D.EMAIL+'">'+D.EMAIL+'</a></div><div class="bub">I’m also on <a href="'+D.LINKEDIN+'" target="_blank" rel="noopener">LinkedIn</a> and <a href="'+D.GITHUB+'" target="_blank" rel="noopener">GitHub</a>.</div><div class="bub me">Hi! I’d like to talk about a role.</div><div class="bub"><button class="btn" id="mw" type="button">Write to me</button></div>';
+    body.innerHTML='<div style="height:12px"></div><div class="bub">Hi, I\'m Balasankar. Thanks for stopping by.</div><div class="bub">The fastest way to reach me is email: <a href="mailto:'+D.EMAIL+'">'+D.EMAIL+'</a></div><div class="bub">I\'m also on <a href="'+D.LINKEDIN+'" target="_blank" rel="noopener">LinkedIn</a> and <a href="'+D.GITHUB+'" target="_blank" rel="noopener">GitHub</a>.</div><div class="bub me">Hi! I\'d like to talk about a role.</div><div class="bub"><button class="btn" id="mw" type="button">Write to me</button></div>';
     var mw=body.querySelector("#mw"); if(mw)mw.addEventListener("click",function(){showApp();go("hit");});
   }
   [].forEach.call(w.body.querySelectorAll(".mss button"),function(b){b.addEventListener("click",function(){show(b.getAttribute("data-c"));});});
@@ -1891,6 +1897,7 @@ function openTrash(){openApp("finder","Trash");}
 /* start */
 var h0=(location.hash||"").replace(/^#\/?/,"");
 mobileView=window.innerWidth<820;
+if(!mobileView){appEl.classList.add("windowed");}
 go(byId[h0]?h0:"about",true);
 if(mobileView)$("#app").setAttribute("data-view","note");
 window.addEventListener("hashchange",function(){var h=(location.hash||"").replace(/^#\/?/,"");if(byId[h]&&h!==cur)go(h,true);});
