@@ -732,7 +732,7 @@ var USE="Production GenAI, retrieval and computer vision systems on Google Cloud
 var OUT="Pure front-end or mobile roles, and roles that need six or more years of experience.";
 var LIMITS=[["Experience.","About two years. Roles that need six or more years are a stretch."],["GST Copilot is a prototype.","Its formal evaluation, a CA-reviewed question set and RAGAS, is the next step."],["Platform.","Most of my production work is on Google Cloud, with AWS used less."],["The matcher and the bot.","They only know what is written on this site, so they can miss skills I haven’t listed. Treat them as a starting point and ask me."]];
 var EDU=[["MSc Data Science","Christ University, Bengaluru, 2023 to 2025"],["BCA in Data Science","Amrita Vishwa Vidyapeetham, Kerala, 2020 to 2023"],["Certifications","AWS Certified Cloud Practitioner. IBM Introduction to Data Engineering. IBM Data Privacy for Information Architecture."]];
-var SKILLS=[["GenAI and NLP","LLMs (Gemini, LLaMA, Mistral), RAG and agentic RAG, LangChain, CrewAI, few-shot prompting, LLM evaluation, knowledge graphs, transformers"],["Retrieval and storage","Qdrant, ChromaDB, Neo4j, PostgreSQL, BigQuery, SQL"],["Vision and forecasting","Multimodal models, computer vision, Prophet, SARIMA, LightGBM, Monte Carlo simulation, geospatial analysis"],["Cloud and delivery","GCP (Vertex AI, Cloud Run, Pub/Sub, Cloud Storage, Cloud SQL, Cloud Scheduler, Secret Manager, IAM), AWS (EC2, S3, Lambda), Docker, GitHub Actions, FastAPI, Streamlit"],["Languages","Python, SQL, Java, JavaScript, R"]];
+var SKILLS=[["GenAI and agents","RAG pipelines, agentic RAG, and knowledge graph-driven RAG, multi-agent systems, LangChain, CrewAI, LLMs (Gemini, LLaMA, Mistral), few-shot prompting, LLM evaluation, transformers"],["Cloud and delivery","GCP (Vertex AI, Cloud Run, Pub/Sub, BigQuery, Cloud Storage, Cloud Scheduler, Secret Manager, IAM), AWS (EC2, S3, Lambda), Docker, GitHub Actions, FastAPI, Streamlit"],["Retrieval and storage","Qdrant, ChromaDB, Neo4j, PostgreSQL, SQL, knowledge graphs"],["ML and data science","Computer vision, multimodal models, time-series forecasting (Prophet, SARIMA, LightGBM), geospatial ML, Monte Carlo simulation"],["Production engineering","End-to-end delivery from data to a deployed model or agent, serverless and event-driven pipelines (Cloud Run + Pub/Sub), production AI/ML systems for a US utility client"],["AI-assisted development","Claude Code — agentic coding in the terminal, repo-level changes, git and gh workflows"],["Languages","Python (main), SQL, Java, JavaScript, R"]];
 var TRASH=[
  {id:"t1",name:"hallucinations.txt",msg:"Empty. I checked twice. Every answer on this site comes from this site."},
  {id:"t2",name:"yolo_model.pkl",msg:"Never trained one for production. Few-shot Gemini won that argument."},
@@ -1382,7 +1382,7 @@ noteById.hit.date="2024";
 noteById.skills.date="2025";
 noteById.yolo.hidden=noteById.bq.hidden=noteById.gstlimits.hidden=true;
 NOTES.splice(NOTES.indexOf(noteById.limits),1);
-var NOTE_ORDER=["about","experience","skills","research","askwhen","yolo","bq","gstlimits","hit"];
+var NOTE_ORDER=["about","experience","research","skills","askwhen","yolo","bq","gstlimits","hit"];
 NOTES.sort(function(a,b){return NOTE_ORDER.indexOf(a.id)-NOTE_ORDER.indexOf(b.id);});
 var thinkNote=noteById.askwhen, thinkBuild=thinkNote.build;
 thinkNote.build=function(el){
